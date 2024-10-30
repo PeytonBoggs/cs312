@@ -1,4 +1,5 @@
 #include "rt.h"
+#include <stdio.h>
 
 //Sets the environment and prints a ppm-readable output
 int main() {
@@ -7,8 +8,11 @@ int main() {
     COLOR_T obj_color = {1.0, 0.0, 0.0};
     VP_T light_loc = {5.0, 10.0, 0.0};
 
+    FILE *fp = fopen("img.ppm", "w");
+
     //Header for ppm file
-    printf("P6 1000 1000 255\n");
+    //FOR P6: fprintf(fp, "P6 1000 1000 255\n");
+    fprintf(fp, "P3\n1000 1000\n255\n");
 
     //Adding R G B to ppm file for every pixel
     for (int y = 1; y <= 1000; y++) {
@@ -21,9 +25,12 @@ int main() {
             //Tracing ray
             COLOR_T color = trace(ray, sphere, obj_color, light_loc);
 
-            printf("%c%c%c", (unsigned char) color.R, (unsigned char) color.G, (unsigned char) color.B);
+            //FOR P6: fprintf(fp, "%c%c%c", (unsigned char) color.R, (unsigned char) color.G, (unsigned char) color.B);
+            fprintf(fp, "%d %d %d\n", (int) color.R, (int) color.G, (int) color.B);
         }
     }
+
+    fclose(fp);
 }
 
 //Calculates whether a ray intersects with a sphere, and calculates values if so. Returns 1 if there is an intersection, and 0 if not.
