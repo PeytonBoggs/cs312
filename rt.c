@@ -1,6 +1,7 @@
 #include "rt.h"
 #include "light.h"
 #include "sphere.h"
+#include "plane.h"
 #include <stdio.h>
 #include <malloc.h>
 
@@ -42,33 +43,46 @@ int init(SCENE_T *scene) {
 
     //Sphere 1
     node = (OBJ_T *)malloc(sizeof(OBJ_T));
-    node->sphere.origin = (VP_T){-1.0, 0.0, 10.0};
-    node->sphere.radius = 2.0;
-    node->color = (COLOR_T){1.0, 0.0, 0.0};
+    node->sphere.origin = (VP_T){0.5, 0.8, 4.0};
+    node->sphere.radius = 0.5;
+    node->color = (COLOR_T){0.8, 0.0, 0.0};
     node->intersect = &intersect_sphere;
+    node->checker = 0;
 
     //Sphere 2
     node->next = scene->objs;
     scene->objs = node;
 
     node = (OBJ_T *)malloc(sizeof(OBJ_T));
-    node->sphere.origin = (VP_T){1.0, 0.0, 10.0};
-    node->sphere.radius = 2.0;
-    node->color = (COLOR_T){0.0, 1.0, 0.0};
+    node->sphere.origin = (VP_T){-0.5, 0.15, 4.2};
+    node->sphere.radius = 0.6;
+    node->color = (COLOR_T){0.0, 0.8, 0.0};
     node->intersect = &intersect_sphere;
+    node-> checker = 0;
 
     node->next = scene->objs;
     scene->objs = node;
 
+    //Plane
+    node = (OBJ_T *)malloc(sizeof(OBJ_T));
+    node->plane.normal = (VP_T){0.0, 1.0, 0.0};
+    node->plane.d = 0.9;
+    node->color = (COLOR_T){0.0, 0.0, 0.0};
+    node->color2 = (COLOR_T){1.0, 1.0, 1.0};
+    node->intersect = &intersect_plane;
+    node->checker = 1;
 
-    scene->light.loc = (VP_T) {5.0, 10.0, 0.0};
+    node->next = scene->objs;
+    scene->objs = node;
+
+    scene->light.loc = (VP_T) {5.0, 10.0, -2.0};
 
     return 0;
 }
 
 //Returns color of the pixel based on intersection and illumination
 COLOR_T trace(RAY_T ray, SCENE_T scene) {
-    COLOR_T color = {0.0, 0.0, 0.0};
+    COLOR_T color = {76.5, 76.5, 127.5};
     double closest_t;
     VP_T closest_int_pt;
     VP_T closest_normal;
@@ -93,7 +107,7 @@ COLOR_T trace(RAY_T ray, SCENE_T scene) {
         return color;
     }
 
-    color = illuminate(ray, closest_int_pt, closest_obj->color, closest_normal, scene.light.loc);
+    color = illuminate(ray, closest_int_pt, *closest_obj, closest_normal, scene.light.loc);
 
     //Cap the lighting so that it does not overflow
     if (color.R > 1) { color.R = 1; }

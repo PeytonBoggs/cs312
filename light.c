@@ -2,8 +2,13 @@
 #include <math.h>
 
 //Determines and returns the lighting of the intersected point based on the ray, light location, and object color
-COLOR_T illuminate(RAY_T ray, VP_T int_pt, COLOR_T obj_color, VP_T normal, VP_T light_loc) {
+COLOR_T illuminate(RAY_T ray, VP_T int_pt, OBJ_T obj, VP_T normal, VP_T light_loc) {
     COLOR_T color;
+
+    COLOR_T obj_color = obj.color;
+    if (obj.checker && (((int) floor(int_pt.x) + (int) floor(int_pt.y) + (int) floor(int_pt.z)) & 1)) {
+        obj_color = obj.color2;
+    }
 
     //Ambient lighting
     color.R = 0.1*obj_color.R;
