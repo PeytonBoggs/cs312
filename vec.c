@@ -17,3 +17,8 @@ VP_T normalize(VP_T ray) {
 double dot(VP_T a, VP_T b) {
     return a.x*b.x + a.y*b.y + a.z*b.z;
 }
+
+//Returns the length of a vector
+double length(VP_T ray) {
+    return sqrt(ray.x*ray.x + ray.y*ray.y + ray.z*ray.z);
+}

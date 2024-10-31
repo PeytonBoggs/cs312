@@ -10,3 +10,4 @@ typedef struct {
 //Function prototypes for vp.c
 VP_T normalize(VP_T ray);
 double dot(VP_T x, VP_T y);
+double length(VP_T x);

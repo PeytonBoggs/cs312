@@ -107,7 +107,7 @@ COLOR_T trace(RAY_T ray, SCENE_T scene) {
         return color;
     }
 
-    color = illuminate(ray, closest_int_pt, *closest_obj, closest_normal, scene.light.loc);
+    color = illuminate(ray, closest_int_pt, *closest_obj, closest_normal, scene);
 
     //Cap the lighting so that it does not overflow
     if (color.R > 1) { color.R = 1; }
