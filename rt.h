@@ -59,7 +59,7 @@ typedef struct {
 } SCENE_T;
 
 //Function prototypes for rt.c
-int init(SCENE_T *scene);
+int init(SCENE_T *scene, int num_rows, int num_cols);
 COLOR_T trace(RAY_T ray, SCENE_T scene);
 
 #endif

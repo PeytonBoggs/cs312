@@ -7,21 +7,25 @@
 
 //Sets the environment and prints a ppm-readable output
 int main() {
+    //Screen size
+    int screen_height = 1080;
+    int screen_width = 1920;
+
+    //Initializes the scene
+    SCENE_T scene;
+    init(&scene, screen_height, screen_width);
+
     FILE *fp = fopen("img.ppm", "w");
 
     //Header for ppm file
     //FOR P6: fprintf(fp, "P6 1000 1000 255\n");
-    fprintf(fp, "P3\n1000 1000\n255\n");
-
-    SCENE_T scene;
-    init(&scene);
-
+    fprintf(fp, "P3\n%d %d\n255\n", screen_width, screen_height);
 
     //Adding R G B to ppm file for every pixel
-    for (int y = 1; y <= 1000; y++) {
-        for (int x = 1; x <= 1000; x++) {
+    for (int y = 1; y <= screen_height; y++) {
+        for (int x = 1; x <= screen_width; x++) {
             //Calculating ray
-            VP_T ray_dir = {((double) x/1000.0) - 0.5, 0.5 - ((double) y/1000.0), 1};
+            VP_T ray_dir = { x * scene.pixel_size + scene.start_x, scene.start_y - y * scene.pixel_size, 1};
             ray_dir = normalize(ray_dir);
             RAY_T ray = {{0.0, 0.0, 0.0}, ray_dir};
 
@@ -37,45 +41,46 @@ int main() {
     return 0;
 }
 
-int init(SCENE_T *scene) {
+//Initializes the scene with objects and light
+int init(SCENE_T *scene, int num_rows, int num_cols) {
+    int height = 1;
+    int width = num_cols/num_rows;
+
+    scene->pixel_size = 1.0 / num_rows;
+    scene->start_y = 0.5;
+    scene->start_x = -((double) num_cols / num_rows) / 2.0;
+
+    FILE *fp = fopen("scene1.txt", "r");
+
+    char c;
     scene->objs = NULL;
     OBJ_T *node;
 
-    //Sphere 1
-    node = (OBJ_T *)malloc(sizeof(OBJ_T));
-    node->sphere.origin = (VP_T){0.5, 0.8, 4.0};
-    node->sphere.radius = 0.5;
-    node->color = (COLOR_T){0.8, 0.0, 0.0};
-    node->intersect = &intersect_sphere;
-    node->checker = 0;
-
-    //Sphere 2
-    node->next = scene->objs;
-    scene->objs = node;
-
-    node = (OBJ_T *)malloc(sizeof(OBJ_T));
-    node->sphere.origin = (VP_T){-0.5, 0.15, 4.2};
-    node->sphere.radius = 0.6;
-    node->color = (COLOR_T){0.0, 0.8, 0.0};
-    node->intersect = &intersect_sphere;
-    node-> checker = 0;
-
-    node->next = scene->objs;
-    scene->objs = node;
-
-    //Plane
-    node = (OBJ_T *)malloc(sizeof(OBJ_T));
-    node->plane.normal = (VP_T){0.0, 1.0, 0.0};
-    node->plane.d = 0.9;
-    node->color = (COLOR_T){0.0, 0.0, 0.0};
-    node->color2 = (COLOR_T){1.0, 1.0, 1.0};
-    node->intersect = &intersect_plane;
-    node->checker = 1;
-
-    node->next = scene->objs;
-    scene->objs = node;
-
-    scene->light.loc = (VP_T) {5.0, 10.0, -2.0};
+    //Read the scene file
+    while (fscanf(fp, "%c", &c) != EOF) {
+        if (c == 's') {
+            node = (OBJ_T *)malloc(sizeof(OBJ_T));
+            fscanf(fp, "%lf %lf %lf", &node->sphere.origin.x, &node->sphere.origin.y, &node->sphere.origin.z);
+            fscanf(fp, "%lf", &node->sphere.radius);
+            fscanf(fp, "%lf %lf %lf", &node->color.R, &node->color.G, &node->color.B);
+            node->intersect = &intersect_sphere;
+            node->next = scene->objs;
+            scene->objs = node;
+            node->checker = 0;
+        } else if (c == 'p') {
+            node = (OBJ_T *)malloc(sizeof(OBJ_T));
+            fscanf(fp, "%lf %lf %lf", &node->plane.normal.x, &node->plane.normal.y, &node->plane.normal.z);
+            fscanf(fp, "%lf", &node->plane.d);
+            fscanf(fp, "%lf %lf %lf", &node->color.R, &node->color.G, &node->color.B);
+            fscanf(fp, "%lf %lf %lf", &node->color2.R, &node->color2.G, &node->color2.B);
+            node->intersect = &intersect_plane;
+            node->checker = 1;
+            node->next = scene->objs;
+            scene->objs = node;
+        } else if (c == 'l') {
+            fscanf(fp, "%lf %lf %lf", &scene->light.loc.x, &scene->light.loc.y, &scene->light.loc.z);
+        }
+    }
 
     return 0;
 }
