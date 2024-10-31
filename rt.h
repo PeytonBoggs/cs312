@@ -1,5 +1,6 @@
 #ifndef RT_H
 #define RT_H
+#define NUM_OBJS 2
 
 #include <stdio.h>
 #include "vec.h"
@@ -16,6 +17,7 @@ typedef struct {
     double radius;
 } SPHERE_T;
 
+//Plane type
 typedef struct {
     VP_T normal;
     double d;
@@ -47,7 +49,17 @@ typedef struct OBJ {
     struct OBJ *next;
 } OBJ_T;
 
+//Scene type
+typedef struct {
+    OBJ_T *objs;
+    LIGHT_T light;
+    double start_x;
+    double start_y;
+    double pixel_size;
+} SCENE_T;
+
 //Function prototypes for rt.c
-COLOR_T trace(RAY_T ray, SPHERE_T sphere, COLOR_T obj_color, VP_T light_loc);
+int init(SCENE_T *scene);
+COLOR_T trace(RAY_T ray, SCENE_T scene);
 
 #endif
