@@ -8,8 +8,8 @@
 //Sets the environment and prints a ppm-readable output
 int main() {
     //Screen size
-    int screen_height = 1080;
-    int screen_width = 1920;
+    int screen_height = 480;
+    int screen_width = 640;
 
     //Initializes the scene
     SCENE_T scene;
@@ -18,8 +18,7 @@ int main() {
     FILE *fp = fopen("img.ppm", "w");
 
     //Header for ppm file
-    //FOR P6: fprintf(fp, "P6 1000 1000 255\n");
-    fprintf(fp, "P3\n%d %d\n255\n", screen_width, screen_height);
+    fprintf(fp, "P6 %d %d 255\n", screen_width, screen_height);
 
     //Adding R G B to ppm file for every pixel
     for (int y = 1; y <= screen_height; y++) {
@@ -32,8 +31,7 @@ int main() {
             //Tracing ray
             COLOR_T color = trace(ray, scene);
 
-            //FOR P6: fprintf(fp, "%c%c%c", (unsigned char) color.R, (unsigned char) color.G, (unsigned char) color.B);
-            fprintf(fp, "%d %d %d\n", (int) color.R, (int) color.G, (int) color.B);
+            fprintf(fp, "%c%c%c", (unsigned char) color.R, (unsigned char) color.G, (unsigned char) color.B);
         }
     }
 

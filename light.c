@@ -23,8 +23,7 @@ COLOR_T illuminate(RAY_T ray, VP_T int_pt, OBJ_T obj, VP_T normal, SCENE_T scene
 
     //Light attenuation
     double dl = length((VP_T) {light_loc.x - int_pt.x, light_loc.y - int_pt.y, light_loc.z - int_pt.z});
-    //double atten = 1/(0.002 * dl * dl + 0.2 * dl + 0.2);
-    double atten = 2/(0.0005 * dl * dl + 0.05 * dl + 1.0);
+    double atten = 1/(0.002 * dl * dl + 0.02 * dl + 0.2);
 
     //Diffuse lighting
     VP_T L = {light_loc.x - int_pt.x, light_loc.y - int_pt.y, light_loc.z - int_pt.z};
