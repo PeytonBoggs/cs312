@@ -13,15 +13,15 @@ class Color{
         double getG() const { return G; }
         double getB() const { return B; }
 
-        Color add (const double &c);
-        Color operator+ (const double &c);
-        Color add (const Color &c);
-        Color operator+ (const Color &c);
+        Color add(const double &c);
+        Color operator+(const double &c);
+        Color add(const Color &c);
+        Color operator+(const Color &c);
 
-        Color mult_scalar (const double &c);
-        Color operator* (const double &c);
+        Color mult_scalar(const double &c);
+        Color operator*(const double &c);
 
-        void cap (void);
+        void cap(void);
 };
 
 #endif
