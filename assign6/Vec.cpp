@@ -1,13 +1,13 @@
 #include "Vec.hpp"
 #include <cmath>
 
-void Vec::set(double x, double y, double z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
+void Vec::set(double a, double b, double c) {
+    this->x = a;
+    this->y = b;
+    this->z = c;
 }
 
-Vec normalize(Vec ray) {
+Vec Vec::normalize(Vec ray) {
     //Take the length of the array
     double length = sqrt(ray.x*ray.x + ray.y*ray.y + ray.z*ray.z);
 
@@ -59,6 +59,6 @@ Vec Vec::operator/ (const double &c) {
     return scalar_divide(c);
 }
 
-double Vec::sum_floor_components(void) {
-    return floor(x) + floor(y) + floor(z);
+int Vec::sum_floor_components(void) {
+    return (int) floor(x) + (int) floor(y) + (int) floor(z);
 }

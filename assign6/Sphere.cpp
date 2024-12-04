@@ -1,7 +1,7 @@
 #include "Sphere.hpp"
 #include <cmath>
 
-Sphere::Sphere(Vec origin, double radius, Color color, Color color2, bool checker) {
+Sphere::Sphere(Vec origin, double radius, Color color, Color color2, bool checker) : Object(color, color2, checker, nullptr) {
     this->origin = origin;
     this->radius = radius;
     this->color = color;
@@ -22,7 +22,7 @@ bool Sphere::intersect(rt ray, double *t, Vec *int_pt, Vec *normal) {
 
     //if there is no intersection, return 0
     if (discriminant <= 0) {
-        return 0;
+        return false;
     }
 
     //Find intersections
@@ -32,7 +32,7 @@ bool Sphere::intersect(rt ray, double *t, Vec *int_pt, Vec *normal) {
 
     //If both intersections are behind us, return 0
     if (pos_t <= 0 || neg_t <= 0) {
-        return 0;
+        return false;
     }
 
     //Take the closest intersection in front of us
@@ -45,5 +45,5 @@ bool Sphere::intersect(rt ray, double *t, Vec *int_pt, Vec *normal) {
     *normal = (Vec) {*int_pt - this->origin};
     *normal = normal->normalize(*normal);
 
-    return 1;
+    return true;
 }

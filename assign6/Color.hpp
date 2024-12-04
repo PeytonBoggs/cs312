@@ -2,16 +2,16 @@
 #define COLOR_H
 
 class Color{
-        double R;
-        double G;
-        double B;
+        double R{};
+        double G{};
+        double B{};
     public:
-        Color(double R, double G, double B) : R(R), G(G), B(B) {}
-        Color() {}
+        Color(double R, double G, double B) : R(R), G(G), B(B) {};
+        Color() {};
 
-        double getR() const { return R; }
-        double getG() const { return G; }
-        double getB() const { return B; }
+        double getR() { return R; };
+        double getG() { return G; };
+        double getB() { return B; };
 
         Color add(const double &c);
         Color operator+(const double &c);
@@ -21,7 +21,7 @@ class Color{
         Color mult_scalar(const double &c);
         Color operator*(const double &c);
 
-        void cap(void);
+        void cap();
 };
 
 #endif

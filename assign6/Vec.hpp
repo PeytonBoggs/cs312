@@ -7,10 +7,10 @@ class Vec{
         double y;
         double z;
     public:
-        Vec(double x, double y, double z) : x(x), y(y), z(z) {}
-        Vec() {}
+        Vec(double a, double b, double c) : x(a), y(b), z(c) {}
+        Vec() = default;
 
-        void set(double x, double y, double z);
+        void set(double a, double b, double c);
         Vec normalize(Vec ray);
 
         double dot(Vec a, Vec b) { return a.x*b.x + a.y*b.y + a.z*b.z; };
@@ -32,7 +32,7 @@ class Vec{
         Vec operator/ (const double &c);
 
         double sum_components(void) { return x + y + z; };
-        double sum_floor_components(void);
+        int sum_floor_components(void);
 };
 
 
