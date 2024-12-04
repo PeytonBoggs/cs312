@@ -11,10 +11,10 @@ class Vec{
         Vec() = default;
 
         void set(double a, double b, double c);
-        Vec normalize(Vec ray);
+        Vec normalize();
 
         double dot(Vec a, Vec b) { return a.x*b.x + a.y*b.y + a.z*b.z; };
-        double length(Vec ray) { return sqrt(ray.x*ray.x + ray.y*ray.y + ray.z*ray.z); };
+        double length() { return sqrt(x*x + y*y + z*z); };
 
         Vec add(const Vec &v);
         Vec operator+ (const Vec &v);

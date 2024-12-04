@@ -43,7 +43,7 @@ bool Sphere::intersect(rt ray, double *t, Vec *int_pt, Vec *normal) {
 
     //Calculate the normalized normal vector at the intersection point
     *normal = (Vec) {*int_pt - this->origin};
-    *normal = normal->normalize(*normal);
+    *normal = (*normal).normalize();
 
     return true;
 }

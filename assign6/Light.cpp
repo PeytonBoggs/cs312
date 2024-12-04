@@ -9,7 +9,7 @@ Light::Light() {}
 //Determines if the light is blocked by another object
 int Light::shadow_test(Vec int_pt, Vec light_loc, Object *cur_obj, Object *objs) {
     Vec shadow_ray = light_loc - int_pt;
-    shadow_ray = shadow_ray.normalize(shadow_ray);
+    shadow_ray = shadow_ray.normalize();
 
     for (Object *curr = objs; curr != nullptr; curr = curr->next) {
         if (curr == cur_obj) {
@@ -21,7 +21,7 @@ int Light::shadow_test(Vec int_pt, Vec light_loc, Object *cur_obj, Object *objs)
         Vec normal;
 
         if (curr->intersect((rt) {int_pt, shadow_ray}, &t, &dummy_int_pt, &normal)) {
-            if (t > 0.001 && t < (light_loc - int_pt).length((light_loc - int_pt))) {
+            if (t > 0.001 && t < (light_loc - int_pt).length()) {
                 return 1;
             }
         }
@@ -49,12 +49,12 @@ Color Light::illuminate(rt ray, Vec int_pt, Object obj, Vec normal, Scene scene)
     }
 
     //Light attenuation
-    double dl = (light_loc - int_pt).length((light_loc - int_pt));
+    double dl = (light_loc - int_pt).length();
     double atten = 1/(0.002 * dl * dl + 0.02 * dl + 0.2);
 
     //Diffuse lighting
     Vec L = light_loc - int_pt;
-    L = L.normalize(L);
+    L = L.normalize();
 
     double dp = L.dot(L, normal);
     if (dp <= 0) {
@@ -66,7 +66,7 @@ Color Light::illuminate(rt ray, Vec int_pt, Object obj, Vec normal, Scene scene)
     //Specular lighting
     Vec R;
     R = L - (normal * 2 * dp);
-    R = R.normalize(R);
+    R = R.normalize();
 
     double dp2 = R.dot(R, ray.dir);
     if (dp2 > 0) {

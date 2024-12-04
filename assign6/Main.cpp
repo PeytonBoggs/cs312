@@ -35,7 +35,7 @@ int main() {
         for (int x = 1; x <= screen_width; x++) {
             //Calculating ray
             Vec ray_dir = { x * scene.pixel_size + scene.start_x, scene.start_y - y * scene.pixel_size, 1};
-            ray_dir = ray_dir.normalize(ray_dir);
+            ray_dir = ray_dir.normalize();
             rt ray = {{0.0, 0.0, 0.0}, ray_dir};
 
             //Tracing ray

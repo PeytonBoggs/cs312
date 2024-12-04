@@ -7,14 +7,14 @@ void Vec::set(double a, double b, double c) {
     this->z = c;
 }
 
-Vec Vec::normalize(Vec ray) {
+Vec Vec::normalize() {
     //Take the length of the array
-    double length = sqrt(ray.x*ray.x + ray.y*ray.y + ray.z*ray.z);
+    double length = sqrt(this->x*this->x + this->y*this->y  + this->z*this->z );
 
     //Divide each coordinate by the length
-    double norm_x = ray.x/length;
-    double norm_y = ray.y/length;
-    double norm_z = ray.z/length;
+    double norm_x = this->x/length;
+    double norm_y = this->y/length;
+    double norm_z = this->z/length;
 
     return (Vec) {norm_x, norm_y, norm_z};
 }
